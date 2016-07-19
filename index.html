@@ -7,9 +7,84 @@
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
   </head>
   <body class="mixpanel-platform-body">
-    <h1>Hello, World!</h1>
+    
+    <div class="mixpanel-platform-section">
+      <h1>Item Detail Page Viewed</h1>
+      <div style="clear: both;"></div>
+      <div id="PageViews" class="report"></div>
+      <h1>Purchase by Card Type</h1>
+      <div style="clear: both;"></div>
+      <div id="TopContent" class="report"></div>
+      <h1>Account Created by Campaign Source</h1>
+      <div style="clear: both;"></div>
+      <div id="ContentbyInitialReferrer" class="report"></div>
+     </div>
+    <style>
+    h1 {
+      font-size: 20px;
+      margin: 10px 0;
+    }
+    .report {
+     margin: 15px 0; 
+    }
+    </style>
     <script>
-      // Run queries and display results here
+      var PageViewsLine  = $('#PageViews').MPChart({chartType: 'line'});
+      var TopContentBar  = $('#TopContent').MPChart({chartType: 'bar'});
+      var ContentbyInitialReferrerBar  = $('#ContentbyInitialReferrer').MPChart({chartType: 'bar'});
+     
+      var segmentPageViewsParams = {
+            from: moment().subtract('30', 'days'),
+            to: moment(),
+            type: 'general',
+            unit: 'day',
+            where: 'properties["mp_country_code"] == "US"',
+      };
+      
+      var segmentTopContentParams = {
+            from: moment().subtract('30', 'days'),
+            to: moment(),
+            limit: '10',
+            type: 'general',
+            unit: 'day',
+            where: 'properties["mp_country_code"] == "US"' ,
+      };
+      
+      var segmentContentbyInitialReferrerParams = {
+            from: moment().subtract('30', 'days'),
+            to: moment(),
+            limit: '10',
+            type: 'general',
+            unit: 'day',
+            where: 'properties["mp_country_code"] == "US"' ,
+      };
+      
+      runQuery();
+       function runQuery() {
+        
+        //Item Detail Page Viewed
+        
+        MP.api.segment('Item Detail Page', segmentPageViewsParams).done(function(results) {
+            
+            PageViewsLine.MPChart('setData', results)
+        });
+        
+         //Purchase by Card Type
+        
+        MP.api.segment('Complete Purchase', 'Card Type', segmentTopContentParams).done(function(results) {
+            
+            TopContentBar.MPChart('setData', results);
+        });
+        
+        //Content by Initial Referrer Data
+        
+        MP.api.segment('Account Created', 'Campaign Source', segmentContentbyInitialReferrerParams).done(function(results) {
+            
+            ContentbyInitialReferrerBar.MPChart('setData', results);
+        });
+        
+        }
+
     </script>
   </body>
 </html>
