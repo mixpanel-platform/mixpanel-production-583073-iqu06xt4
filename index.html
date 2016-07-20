@@ -57,7 +57,7 @@
         
         //NotificationOpened
         
-        MP.api.segment('$campaign_open', 'Campaign', Params1).done(function(results) {
+        MP.api.segment('$campaign_open', 'campaign_id', Params1).done(function(results) {
             
             NotificationOpenedLine.MPChart('setData', results)
         });
