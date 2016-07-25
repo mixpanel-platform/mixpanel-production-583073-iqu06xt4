@@ -7,7 +7,7 @@
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
   </head>
   <body class="mixpanel-platform-body">
-    
+    <div id = "datePicker"></div>
     <div class="mixpanel-platform-section">
       <h1>Notification Opened by Campaign</h1>
       <div style="clear: both;"></div>
@@ -32,6 +32,15 @@
     }
     </style>
     <script>
+    
+  
+    $("#datePicker").MPDatepicker().on('change', function(e, dates) {// Do something when the dates are changed
+        Params1.from = dates.from;
+        Params1.to = dates.to
+        Params2.from = dates.from
+        Params2.to = dates.to
+        runQuery();
+    });
       var NotificationOpenedLine  = $('#NotificationOpened').MPChart({chartType: 'line'});
       var NotificationSentLine  = $('#NotificationSent').MPChart({chartType: 'line'});
       var NotificationBouncedLine  = $('#NotificationBounced').MPChart({chartType: 'line'});
